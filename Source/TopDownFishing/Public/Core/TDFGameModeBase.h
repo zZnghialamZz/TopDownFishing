@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License - Copyright (c) 2022 Nghia Lam
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "TDFGameModeBase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class TOPDOWNFISHING_API ATDFGameModeBase : public AGameModeBase

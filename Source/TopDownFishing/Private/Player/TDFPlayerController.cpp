@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License - Copyright (c) 2022 Nghia Lam
 
 
 #include "Player/TDFPlayerController.h"

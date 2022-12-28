@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License - Copyright (c) 2022 Nghia Lam
 
 #pragma once
 
@@ -7,11 +7,10 @@
 #include "TDFPlayerController.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class TOPDOWNFISHING_API ATDFPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
 };
