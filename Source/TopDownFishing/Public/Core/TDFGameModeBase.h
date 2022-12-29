@@ -6,9 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "TDFGameModeBase.generated.h"
 
-/**
- *
- */
 UCLASS()
 class TOPDOWNFISHING_API ATDFGameModeBase : public AGameModeBase
 {

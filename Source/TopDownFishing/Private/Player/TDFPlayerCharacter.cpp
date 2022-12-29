@@ -12,23 +12,23 @@ ATDFPlayerCharacter::ATDFPlayerCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
 	SpringArmComponent->SetupAttachment(RootComponent);
 	SpringArmComponent->bInheritYaw = false;
+	SpringArmComponent->bDoCollisionTest = false;
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+	CameraComponent->bUsePawnControlRotation = false;
 
-	UCharacterMovementComponent* MovementComponent = Cast<UCharacterMovementComponent>(ACharacter::GetMovementComponent());
-	if (MovementComponent)
-	{
-		bUseControllerRotationYaw = false;
-		
-		MovementComponent->bOrientRotationToMovement = true;
-		MovementComponent->bConstrainToPlane = true;
-		MovementComponent->bSnapToPlaneAtStart = true;
-		MovementComponent->bUseControllerDesiredRotation = false;
-	}
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 }
 
 // Called when the game starts or when spawned
@@ -41,23 +41,4 @@ void ATDFPlayerCharacter::BeginPlay()
 void ATDFPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void ATDFPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ATDFPlayerCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ATDFPlayerCharacter::MoveRight);
-}
-
-void ATDFPlayerCharacter::MoveForward(const float Amount)
-{
-	AddMovementInput(CameraComponent->GetForwardVector(), Amount);
-}
-
-void ATDFPlayerCharacter::MoveRight(const float Amount)
-{
-	AddMovementInput(CameraComponent->GetRightVector(), Amount);
 }

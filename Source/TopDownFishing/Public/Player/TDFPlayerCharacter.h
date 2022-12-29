@@ -29,8 +29,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UFUNCTION(BlueprintCallable, Category = "TDF Player")
+	USpringArmComponent* GetPlayerSpringArm()
+	{
+		return SpringArmComponent;
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "TDF Player")
+	UCameraComponent* GetPlayerCamera()
+	{
+		return CameraComponent;
+	}
 
 private:
 
@@ -39,7 +48,4 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
-
-	void MoveForward(const float Amount);
-	void MoveRight(const float Amount);
 };
