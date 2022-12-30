@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Actors/TDFBaseTool.h"
 
 // Sets default values
 ATDFPlayerCharacter::ATDFPlayerCharacter()
@@ -35,10 +36,24 @@ ATDFPlayerCharacter::ATDFPlayerCharacter()
 void ATDFPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SpawnTool();
 }
 
 // Called every frame
 void ATDFPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ATDFPlayerCharacter::SpawnTool()
+{
+	if (!GetWorld()) return;
+
+	const auto Tool = GetWorld()->SpawnActor<ATDFBaseTool>(ToolClass);
+	if (Tool)
+	{
+		const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
+		Tool->AttachToComponent(GetMesh(), AttachmentRules, "ToolSocket");
+	}
 }

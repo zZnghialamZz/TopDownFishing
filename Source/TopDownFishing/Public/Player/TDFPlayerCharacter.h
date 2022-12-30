@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class ATDFBaseTool;
 
 UCLASS()
 class TOPDOWNFISHING_API ATDFPlayerCharacter : public ACharacter
@@ -43,9 +44,14 @@ public:
 
 private:
 
+	UPROPERTY(EditAnywhere, Category = "Tools")
+	TSubclassOf<ATDFBaseTool> ToolClass;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
+
+	void SpawnTool();
 };
