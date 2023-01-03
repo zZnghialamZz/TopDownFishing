@@ -3,25 +3,27 @@
 #include "Actors/TDFFishingRod.h"
 
 #include "Actors/TDFFish.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/TDFFishPondComponent.h"
-#include "Components/WidgetComponent.h"
 #include "Player/TDFPlayerCharacter.h"
+#include "UI/TDFFishAnnounceWidget.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogTDFFishingRod, All, All);
 
 ATDFFishingRod::ATDFFishingRod()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	if (!FishingCastWidget)
-	{
-		FishingCastWidget = CreateDefaultSubobject<UWidgetComponent>("Fishing Cast Widget");
-		FishingCastWidget->SetupAttachment(ToolMesh);
-	}
 }
 
 void ATDFFishingRod::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!FishAnnounceWidget)
+	{
+		APlayerController* MyPlayerController = GetWorld()->GetFirstPlayerController();
+		FishAnnounceWidget = CreateWidget<UTDFFishAnnounceWidget>(MyPlayerController, FishAnnounceWidgetClass);
+	}
 }
 
 void ATDFFishingRod::BeginAction()
@@ -35,10 +37,6 @@ void ATDFFishingRod::BeginAction()
 			CurrentCastOffset = 0.0f;
 			StartPlayerMontage(FName("FishingStart"));
 			RodState = EFishingRodState::Casting;
-			if (FishingCastWidget)
-			{
-				FishingCastWidget->SetVisibility(false);
-			}
 			break;
 		}
 		case EFishingRodState::Waiting:
@@ -174,11 +172,15 @@ void ATDFFishingRod::OnFinish()
 		// NOTE(Nghia Lam): We only show UI for now, but in real game, we might have some stuff to do here, like add
 		// the fish to player's inventory.
 		UE_LOG(LogTDFFishingRod, Display, TEXT("Catch Fish %s!!"), *CurrentPond->CurrentFish->FishName);
+		if (FishAnnounceWidget) FishAnnounceWidget->UpdateFishName(FName(CurrentPond->CurrentFish->FishName));
 	}
 	else
 	{
 		UE_LOG(LogTDFFishingRod, Display, TEXT("No Fish !!"));
+		if (FishAnnounceWidget) FishAnnounceWidget->UpdateFishName("No Fish !!");
 	}
+	
+	if (FishAnnounceWidget) FishAnnounceWidget->AddToViewport();
 
 	// Cleanup
 

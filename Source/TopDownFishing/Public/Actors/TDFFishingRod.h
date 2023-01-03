@@ -9,6 +9,7 @@
 class UWidgetComponent;
 class ATDFPlayerCharacter;
 class UTDFFishPondComponent;
+class UTDFFishAnnounceWidget;
 
 UENUM()
 enum class EFishingRodState
@@ -56,6 +57,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Fishing Rod")
 	EFishingRodState RodState = EFishingRodState::NotUsed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fishing Rod")
+	TSubclassOf<UTDFFishAnnounceWidget> FishAnnounceWidgetClass;
 
 private:
 
@@ -68,7 +72,7 @@ private:
 	TObjectPtr<ATDFPlayerCharacter> PlayerOwner;
 	TObjectPtr<AActor> FishingCast;
 	TObjectPtr<UTDFFishPondComponent> CurrentPond;
-	TObjectPtr<UWidgetComponent> FishingCastWidget;
+	TObjectPtr<UTDFFishAnnounceWidget> FishAnnounceWidget;
 
 	bool bCastBackward = false;
 	bool bCaughtFish = false;
