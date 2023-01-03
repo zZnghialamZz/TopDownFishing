@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "TDFFishAnnounceWidget.generated.h"
 
+class UTextBlock;
+
 UCLASS()
 class TOPDOWNFISHING_API UTDFFishAnnounceWidget : public UUserWidget
 {
@@ -14,7 +16,7 @@ class TOPDOWNFISHING_API UTDFFishAnnounceWidget : public UUserWidget
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
-	UTextBlock* FishNameTextBlock;
+	TObjectPtr<UTextBlock> FishNameTextBlock;
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateFishName(const FName& NewName);
