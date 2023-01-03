@@ -7,13 +7,17 @@
 ATDFBaseTool::ATDFBaseTool()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	
+
 	ToolMesh = CreateDefaultSubobject<UStaticMeshComponent>("Tool Mesh");
 	ToolMesh->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
-void ATDFBaseTool::BeginPlay()
+void ATDFBaseTool::BeginAction()
 {
-	Super::BeginPlay();
+	bIsToolInUse = true;
+}
+
+void ATDFBaseTool::EndAction()
+{
+	bIsToolInUse = false;
 }

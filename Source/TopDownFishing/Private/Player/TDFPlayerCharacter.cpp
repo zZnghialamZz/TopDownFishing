@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Actors/TDFBaseTool.h"
+#include "Actors/TDFFishingRod.h"
 
 // Sets default values
 ATDFPlayerCharacter::ATDFPlayerCharacter()
@@ -50,10 +51,41 @@ void ATDFPlayerCharacter::SpawnTool()
 {
 	if (!GetWorld()) return;
 
-	const auto Tool = GetWorld()->SpawnActor<ATDFBaseTool>(ToolClass);
-	if (Tool)
+	CurrentTool = GetWorld()->SpawnActor<ATDFBaseTool>(ToolClass);
+	if (CurrentTool)
 	{
 		const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-		Tool->AttachToComponent(GetMesh(), AttachmentRules, "ToolSocket");
+		CurrentTool->AttachToComponent(GetMesh(), AttachmentRules, "ToolSocket");
+		CurrentTool->SetToolOwner(this);
 	}
+}
+
+void ATDFPlayerCharacter::MoveForward(const float Amount)
+{
+	if (CurrentTool->IsToolInUse()) return;
+	AddMovementInput(GetPlayerCamera()->GetForwardVector(), Amount);
+}
+
+void ATDFPlayerCharacter::MoveRight(const float Amount)
+{
+	if (CurrentTool->IsToolInUse()) return;
+	AddMovementInput(GetPlayerCamera()->GetRightVector(), Amount);
+}
+
+void ATDFPlayerCharacter::StartUseCurrentTool()
+{
+	if (CurrentTool) CurrentTool->BeginAction();
+}
+
+void ATDFPlayerCharacter::StopUseCurrentTool()
+{
+	if (CurrentTool) CurrentTool->EndAction();
+}
+
+bool ATDFPlayerCharacter::IsFishing() const
+{
+	ATDFFishingRod* FishingTool = Cast<ATDFFishingRod>(CurrentTool);
+	if (!FishingTool) return false;
+
+	return FishingTool->IsToolInUse();
 }

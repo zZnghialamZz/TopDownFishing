@@ -13,10 +13,6 @@ class TOPDOWNFISHING_API ATDFPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
-
-	ATDFPlayerController();
-
 protected:
 
 	virtual void BeginPlay() override;
@@ -24,7 +20,11 @@ protected:
 
 	void OnMoveForward(const float Amount);
 	void OnMoveRight(const float Amount);
+	void OnUseToolPressed();
+	void OnUseToolReleased();
 
 private:
+
+	UPROPERTY(VisibleAnywhere, Category = "Player")
 	TObjectPtr<ATDFPlayerCharacter> PlayerCharacter;
 };

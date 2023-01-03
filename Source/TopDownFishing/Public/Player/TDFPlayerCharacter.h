@@ -25,10 +25,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void SpawnTool();
+
 public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void MoveForward(const float Amount);
+	void MoveRight(const float Amount);
+	void StartUseCurrentTool();
+	void StopUseCurrentTool();
 
 	UFUNCTION(BlueprintCallable, Category = "TDF Player")
 	USpringArmComponent* GetPlayerSpringArm()
@@ -42,16 +49,26 @@ public:
 		return CameraComponent;
 	}
 
+	UFUNCTION(BlueprintCallable, Category = "TDF Player")
+	ATDFBaseTool* GetCurrentTool()
+	{
+		return CurrentTool;
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "TDF Player")
+	bool IsFishing() const;
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Tools")
 	TSubclassOf<ATDFBaseTool> ToolClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "Tool")
+	TObjectPtr<ATDFBaseTool> CurrentTool;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
-
-	void SpawnTool();
 };
